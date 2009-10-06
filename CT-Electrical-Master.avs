@@ -16,4 +16,3 @@ Crop(10,0,-6,480)			# Crop off overscan
 MCBob_EEDI()				# Deinterlace!
 ColorYUV(levels = "PC->TV")	# Fix levels
 HQDN3D()					# Denoise the output
-#AntiAliasing()				# Antialias the clip
