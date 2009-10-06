@@ -7,7 +7,7 @@
 
 LoadPlugin("C:\Program Files (x86)\DGMPGDec\DGDecode.dll")
 
-video = MPEG2Source("Originals\CUA-DiscoverOklahoma.d2v")
+video = MPEG2Source("Originals\CUA-DiscoverOklahoma.d2v", cpu=6, iPP=true)
 audio = DirectShowSource("Originals\CUA-DiscoverOklahoma T80 2_0ch 256Kbps DELAY 130ms.ac3", video=false)
 original = AudioDub(video, audio)
 
@@ -23,8 +23,9 @@ segment = FadeIn(original.Trim(12692,19623), 30)
 
 output = intro + blackout + segment
 output = output.MCBob_EEDI()					# Deinterlace
-output = output.Crop(10,0,-6,480)				# Crop off overscan
+output = output.Crop(10,60,-6,-60)				# Crop off overscan and hard letterboxing
 output = output.ColorYUV(levels = "PC->TV")		# Fix levels
 output = output.HQDN3D()						# Denoise the output
+output = output.MSharpen()						# Sharpen the output
 
 return output
