@@ -2,17 +2,20 @@
 # (C) 2009 Keith Gable
 
 ###############################################################################
-# Automotive Service Technology - Full Overview Video
+# Automotive Service Technology - Full Overview Video (1920x1080 mixed i/p)
 ###############################################################################
 
-QTInput("Originals\091013 Auto Overview dnxhd.mov",audio=true)
+original = QTInput("Originals\091013 Auto Overview dnxhd.mov",audio=true)
 
 # Basics.
-ConvertToYV12()
-Normalize()
+original = original.ConvertToYV12()
+original = original.Normalize()
 
-Crop(10,0,-6,480)			# Crop off overscan
+original = original.MCBob_EEDI()				# Deinterlace
+original = original.ColorYUV(levels = "PC->TV")	# Fix levels
+original = original.HQDN3D()					# Denoise
 
-MCBob_EEDI()				# Deinterlace
-ColorYUV(levels = "PC->TV")	# Fix levels
-HQDN3D()					# Denoise
+# Make 720p since the source video was 720p _anyways_
+resized = original.BilinearResize(1280,720)
+
+return resized
